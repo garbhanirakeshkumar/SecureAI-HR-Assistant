@@ -4,12 +4,32 @@
     <title>SecureAI HR Assistant</title>
 </head>
 <body>
+
     <h1>Welcome to SecureAI HR Assistant</h1>
 
-    <p>Your AI-powered HR security platform.</p>
+    <h2>Navigation</h2>
 
     <a href="{% url 'security_scanner' %}">
-        Open Security Scanner
+        Security Scanner
     </a>
+
+    <br><br>
+
+    <a href="{% url 'hr_chatbot' %}">
+        HR Chatbot
+    </a>
+
+    <br><br>
+
+    <a href="{% url 'security_dashboard' %}">
+        Security Dashboard
+    </a>
+
+    <br><br>
+
+    <a href="{% url 'user_logout' %}">
+        Logout
+    </a>
+
 </body>
 </html>
