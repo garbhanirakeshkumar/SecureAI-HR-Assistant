@@ -96,7 +96,6 @@ def hr_chatbot(request):
             "validation": validation,
         }
     )
-
 @login_required(login_url="user_login")
 def security_dashboard(request):
     total_events = SecurityAuditLog.objects.count()
@@ -107,6 +106,10 @@ def security_dashboard(request):
 
     medium_risk_events = SecurityAuditLog.objects.filter(
         risk_level="Medium"
+    ).count()
+
+    low_risk_events = SecurityAuditLog.objects.filter(
+        risk_level="Low"
     ).count()
 
     recent_logs = SecurityAuditLog.objects.order_by(
@@ -120,6 +123,7 @@ def security_dashboard(request):
             "total_events": total_events,
             "high_risk_events": high_risk_events,
             "medium_risk_events": medium_risk_events,
+            "low_risk_events": low_risk_events,
             "recent_logs": recent_logs,
         }
     )
