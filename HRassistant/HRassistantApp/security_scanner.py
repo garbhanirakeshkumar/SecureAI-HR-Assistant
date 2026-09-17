@@ -30,3 +30,27 @@ def scan_prompt(message):
         "matched_rules": [],
         "message": "No suspicious instruction detected."
     }
+
+def mask_sensitive_data(message):
+    # Mask email addresses
+    message = re.sub(
+        r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b',
+        '[EMAIL PROTECTED]',
+        message
+    )
+
+    # Mask 10-digit phone numbers
+    message = re.sub(
+        r'\b\d{10}\b',
+        '[PHONE NUMBER PROTECTED]',
+        message
+    )
+
+    # Mask 12-digit Aadhaar-like numbers
+    message = re.sub(
+        r'\b\d{4}\s?\d{4}\s?\d{4}\b',
+        '[ID NUMBER PROTECTED]',
+        message
+    )
+
+    return message
