@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SecureAI Security Scanner</title>
+</head>
+<body>
+
+    <h1>SecureAI HR Assistant</h1>
+    <h2>Prompt Injection Detector</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <textarea
+            name="message"
+            rows="5"
+            cols="50"
+            placeholder="Enter a message to scan..."
+            required
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">Scan Message</button>
+    </form>
+
+    {% if result %}
+        <h3>Scan Result</h3>
+
+        <p>Suspicious: {{ result.is_suspicious }}</p>
+        <p>Risk Level: {{ result.risk_level }}</p>
+        <p>Message: {{ result.message }}</p>
+
+        <h4>Matched Rules:</h4>
+
+        <ul>
+            {% for rule in result.matched_rules %}
+                <li>{{ rule }}</li>
+            {% empty %}
+                <li>No suspicious rules found.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>
