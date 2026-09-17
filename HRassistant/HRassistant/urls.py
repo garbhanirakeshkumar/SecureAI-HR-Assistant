@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HRassistantApp.views import home,security_scanner,hr_chatbot,security_dashboard
+from HRassistantApp.views import home,security_scanner,hr_chatbot,security_dashboard,user_login,user_logout
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,4 +24,6 @@ urlpatterns = [
     path("security-scanner/", security_scanner, name="security_scanner"),
     path("hr-chatbot/", hr_chatbot, name="hr_chatbot"),
     path("security-dashboard/", security_dashboard, name="security_dashboard"),
+    path("login/", user_login, name="user_login"),
+    path("logout/", user_logout, name="user_logout"),
 ]

@@ -1,16 +1,48 @@
 
 from django.shortcuts import render
-
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 from .security_scanner import scan_prompt, mask_sensitive_data
 from .hr_chatbot import get_hr_response
 from .response_validator import validate_response
 from .models import SecurityAuditLog
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url="user_login")
 def home(request):
     return render(request, "home.html")
 
+def user_login(request):
+    error = None
 
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+            login(request, user)
+            return redirect("security_dashboard")
+        else:
+            error = "Invalid username or password."
+
+    return render(
+        request,
+        "login.html",
+        {"error": error}
+    )
+
+def user_logout(request):
+    logout(request)
+    return redirect("user_login")
+
+@login_required(login_url="user_login")
 def security_scanner(request):
     result = None
     masked_message = None
@@ -38,6 +70,7 @@ def security_scanner(request):
     )
 
 
+@login_required(login_url="user_login")
 def hr_chatbot(request):
     response = None
     validation = None
@@ -64,6 +97,7 @@ def hr_chatbot(request):
         }
     )
 
+@login_required(login_url="user_login")
 def security_dashboard(request):
     total_events = SecurityAuditLog.objects.count()
 
