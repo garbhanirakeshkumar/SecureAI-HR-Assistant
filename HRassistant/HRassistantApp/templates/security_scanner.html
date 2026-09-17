@@ -3,50 +3,159 @@
 <html>
 <head>
     <title>SecureAI Security Scanner</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 600px;
+            max-width: 90%;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(76, 29, 149, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4c1d95;
+        }
+
+        h2 {
+            text-align: center;
+            color: #ea580c;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #c4b5fd;
+            border-radius: 8px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border: 2px solid #7c3aed;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #5b21b6;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            border-radius: 8px;
+        }
+
+        .protected {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-left: 5px solid #16a34a;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #7c3aed;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #ea580c;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>SecureAI HR Assistant</h1>
-    <h2>Prompt Injection Detector</h2>
+    <div class="container">
 
-    <form method="POST">
-        {% csrf_token %}
+        <h1>SecureAI HR Assistant</h1>
+        <h2>Prompt Injection Detector</h2>
 
-        <textarea
-            name="message"
-            rows="5"
-            cols="50"
-            placeholder="Enter a message to scan..."
-            required
-        ></textarea>
+        <form method="POST">
+            {% csrf_token %}
 
-        <br><br>
+            <textarea
+                name="message"
+                rows="5"
+                placeholder="Enter a message to scan..."
+                required
+            ></textarea>
 
-        <button type="submit">Scan Message</button>
-    </form>
+            <br><br>
 
-    {% if result %}
-        <h3>Scan Result</h3>
+            <button type="submit">Scan Message</button>
+        </form>
 
-        <p>Suspicious: {{ result.is_suspicious }}</p>
-        <p>Risk Level: {{ result.risk_level }}</p>
-        <p>Message: {{ result.message }}</p>
+        {% if result %}
 
-        <h4>Matched Rules:</h4>
+            <div class="result">
+                <h3>Scan Result</h3>
 
-        <ul>
-            {% for rule in result.matched_rules %}
-                <li>{{ rule }}</li>
-            {% empty %}
-                <li>No suspicious rules found.</li>
-            {% endfor %}
-        </ul>
+                <p>
+                    <strong>Suspicious:</strong>
+                    {{ result.is_suspicious }}
+                </p>
 
-        {% if masked_message %}
-            <h3>Protected Message</h3>
-            <p>{{ masked_message }}</p>
+                <p>
+                    <strong>Risk Level:</strong>
+                    {{ result.risk_level }}
+                </p>
+
+                <p>{{ result.message }}</p>
+
+                <h4>Matched Rules:</h4>
+
+                <ul>
+                    {% for rule in result.matched_rules %}
+                        <li>{{ rule }}</li>
+                    {% empty %}
+                        <li>No suspicious rules found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if masked_message %}
+                <div class="protected">
+                    <h3>Protected Message</h3>
+                    <p>{{ masked_message }}</p>
+                </div>
+            {% endif %}
+
         {% endif %}
-    {% endif %}
+
+        <a href="{% url 'home' %}" class="back">
+            Back to Home
+        </a>
+
+    </div>
 
 </body>
 </html>

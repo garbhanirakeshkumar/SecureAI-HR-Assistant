@@ -3,53 +3,150 @@
 <html>
 <head>
     <title>SecureAI HR Chatbot</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 600px;
+            max-width: 90%;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(76, 29, 149, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4c1d95;
+        }
+
+        h2 {
+            text-align: center;
+            color: #ea580c;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #c4b5fd;
+            border-radius: 8px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border: 2px solid #7c3aed;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #5b21b6;
+        }
+
+        .response {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            border-radius: 8px;
+        }
+
+        .validation {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-left: 5px solid #16a34a;
+            border-radius: 8px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #7c3aed;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #ea580c;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>SecureAI HR Assistant</h1>
-    <h2>HR Chatbot</h2>
+    <div class="container">
 
-    <form method="POST">
-        {% csrf_token %}
+        <h1>SecureAI HR Assistant</h1>
+        <h2>HR Chatbot</h2>
 
-        <textarea
-            name="message"
-            rows="4"
-            cols="50"
-            placeholder="Ask your HR question..."
-            required
-        ></textarea>
+        <form method="POST">
+            {% csrf_token %}
 
-        <br><br>
+            <textarea
+                name="message"
+                rows="5"
+                placeholder="Ask your HR question..."
+                required
+            ></textarea>
 
-        <button type="submit">Ask HR Assistant</button>
-    </form>
+            <br><br>
 
-    {% if response %}
-    <h3>Assistant Response</h3>
-    <p>{{ response }}</p>
+            <button type="submit">Ask HR Assistant</button>
+        </form>
 
-    <h3>Security Validation</h3>
+        {% if response %}
 
-    <p>
-        Safe:
-        {{ validation.is_safe }}
-    </p>
+            <div class="response">
+                <h3>Assistant Response</h3>
+                <p>{{ response }}</p>
+            </div>
 
-    <p>
-        {{ validation.message }}
-    </p>
+            <div class="validation">
+                <h3>Security Validation</h3>
 
-    {% if validation.warnings %}
-        <h4>Security Warnings:</h4>
+                <p>
+                    <strong>Safe:</strong> {{ validation.is_safe }}
+                </p>
 
-        <ul>
-            {% for warning in validation.warnings %}
-                <li>{{ warning }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endif %}
+                <p>{{ validation.message }}</p>
+
+                {% if validation.warnings %}
+                    <h4>Security Warnings:</h4>
+
+                    <ul>
+                        {% for warning in validation.warnings %}
+                            <li>{{ warning }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+        <a href="{% url 'home' %}" class="back">
+            Back to Home
+        </a>
+
+    </div>
 
 </body>
 </html>

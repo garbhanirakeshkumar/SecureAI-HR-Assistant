@@ -1,9 +1,82 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>SecureAI Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ff;
+            margin: 0;
+        }
+
+        .container {
+            width: 350px;
+            max-width: 85%;
+            margin: 100px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(76, 29, 149, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4c1d95;
+            font-size: 25px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #ea580c;
+        }
+
+        label {
+            color: #4c1d95;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #c4b5fd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid #7c3aed;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #5b21b6;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
 </head>
+
 <body>
+
+<div class="container">
 
     <h1>SecureAI HR Assistant</h1>
     <h2>Login</h2>
@@ -25,8 +98,10 @@
     </form>
 
     {% if error %}
-        <p style="color: red;">{{ error }}</p>
+        <p class="error">{{ error }}</p>
     {% endif %}
+
+</div>
 
 </body>
 </html>

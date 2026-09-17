@@ -3,47 +3,178 @@
 <html>
 <head>
     <title>AI Security Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ff;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4c1d95;
+        }
+
+        h2 {
+            color: #ea580c;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout {
+            color: #ea580c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(76, 29, 149, 0.15);
+            border-top: 4px solid #7c3aed;
+        }
+
+        .card h3 {
+            color: #6b7280;
+        }
+
+        .card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4c1d95;
+        }
+
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #7c3aed;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f3ff;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            color: #7c3aed;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>SecureAI HR Assistant</h1>
+<div class="container">
+
+    <div class="top">
+        <h1>SecureAI HR Assistant</h1>
+        <a href="{% url 'user_logout' %}" class="logout">Logout</a>
+    </div>
+
     <h2>AI Security Dashboard</h2>
-    <a href="{% url 'user_logout' %}">Logout</a>
-    <h3>Total Security Events</h3>
-    <p>{{ total_events }}</p>
 
-    <h3>High Risk Events</h3>
-    <p>{{ high_risk_events }}</p>
+    <div class="cards">
 
-    <h3>Medium Risk Events</h3>
-    <p>{{ medium_risk_events }}</p>
-    
-    <h3>Low Risk Events</h3>
-    <p>{{ low_risk_events }}</p>
+        <div class="card">
+            <h3>Total Events</h3>
+            <p>{{ total_events }}</p>
+        </div>
 
-    <h2>Recent Security Logs</h2>
+        <div class="card">
+            <h3>High Risk</h3>
+            <p>{{ high_risk_events }}</p>
+        </div>
 
-    <table border="1">
-        <tr>
-            <th>Event Type</th>
-            <th>Risk Level</th>
-            <th>Message</th>
-            <th>Date</th>
-        </tr>
+        <div class="card">
+            <h3>Medium Risk</h3>
+            <p>{{ medium_risk_events }}</p>
+        </div>
 
-        {% for log in recent_logs %}
-        <tr>
-            <td>{{ log.event_type }}</td>
-            <td>{{ log.risk_level }}</td>
-            <td>{{ log.message }}</td>
-            <td>{{ log.created_at }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">No security logs found.</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <div class="card">
+            <h3>Low Risk</h3>
+            <p>{{ low_risk_events }}</p>
+        </div>
+
+    </div>
+
+    <div class="table-box">
+
+        <h2>Recent Security Logs</h2>
+
+        <table>
+
+            <tr>
+                <th>Event Type</th>
+                <th>Risk Level</th>
+                <th>Message</th>
+                <th>Date</th>
+            </tr>
+
+            {% for log in recent_logs %}
+
+            <tr>
+                <td>{{ log.event_type }}</td>
+                <td>{{ log.risk_level }}</td>
+                <td>{{ log.message }}</td>
+                <td>{{ log.created_at }}</td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="4">No security logs found.</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    <a href="{% url 'home' %}" class="back">Back to Home</a>
+
+</div>
 
 </body>
 </html>

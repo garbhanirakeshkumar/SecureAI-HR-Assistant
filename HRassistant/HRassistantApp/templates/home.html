@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f7fb;
+            background: #f5f3ff;
             margin: 0;
             padding: 0;
         }
@@ -19,12 +19,12 @@
         }
 
         h1 {
-            color: #1e3a8a;
+            color: #4c1d95;
             font-size: 36px;
         }
 
         .subtitle {
-            color: #555;
+            color: #6b7280;
             font-size: 18px;
             margin-bottom: 40px;
         }
@@ -41,11 +41,12 @@
             width: 220px;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(76, 29, 149, 0.15);
+            border-top: 4px solid #ea580c;
         }
 
         .card h2 {
-            color: #2563eb;
+            color: #7c3aed;
             font-size: 20px;
         }
 
@@ -56,7 +57,7 @@
         .btn {
             display: inline-block;
             padding: 10px 18px;
-            background: #2563eb;
+            background: #7c3aed;
             color: white;
             text-decoration: none;
             border-radius: 6px;
@@ -64,14 +65,18 @@
         }
 
         .btn:hover {
-            background: #1e40af;
+            background: #5b21b6;
         }
 
         .logout {
             display: inline-block;
             margin-top: 35px;
-            color: #dc2626;
+            color: #ea580c;
             text-decoration: none;
+        }
+
+        .logout:hover {
+            color: #c2410c;
         }
     </style>
 </head>
@@ -90,7 +95,10 @@
 
             <div class="card">
                 <h2>HR Chatbot</h2>
-                <p>Get answers to common HR questions.</p>
+
+                <p>
+                    Get answers to common HR questions.
+                </p>
 
                 <a href="{% url 'hr_chatbot' %}" class="btn">
                     Open Chatbot
@@ -99,7 +107,10 @@
 
             <div class="card">
                 <h2>Security Scanner</h2>
-                <p>Detect suspicious instructions and protect data.</p>
+
+                <p>
+                    Detect suspicious instructions and protect data.
+                </p>
 
                 <a href="{% url 'security_scanner' %}" class="btn">
                     Scan Message
@@ -108,7 +119,10 @@
 
             <div class="card">
                 <h2>Security Dashboard</h2>
-                <p>Monitor security events and audit logs.</p>
+
+                <p>
+                    Monitor security events and audit logs.
+                </p>
 
                 <a href="{% url 'security_dashboard' %}" class="btn">
                     View Dashboard
