@@ -1,35 +1,127 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>SecureAI HR Assistant</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            font-size: 36px;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 220px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            color: #2563eb;
+            font-size: 20px;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #1e40af;
+        }
+
+        .logout {
+            display: inline-block;
+            margin-top: 35px;
+            color: #dc2626;
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Welcome to SecureAI HR Assistant</h1>
+    <div class="container">
 
-    <h2>Navigation</h2>
+        <h1>SecureAI HR Assistant</h1>
 
-    <a href="{% url 'security_scanner' %}">
-        Security Scanner
-    </a>
+        <p class="subtitle">
+            Secure HR Assistance with AI Security Features
+        </p>
 
-    <br><br>
+        <div class="cards">
 
-    <a href="{% url 'hr_chatbot' %}">
-        HR Chatbot
-    </a>
+            <div class="card">
+                <h2>HR Chatbot</h2>
+                <p>Get answers to common HR questions.</p>
 
-    <br><br>
+                <a href="{% url 'hr_chatbot' %}" class="btn">
+                    Open Chatbot
+                </a>
+            </div>
 
-    <a href="{% url 'security_dashboard' %}">
-        Security Dashboard
-    </a>
+            <div class="card">
+                <h2>Security Scanner</h2>
+                <p>Detect suspicious instructions and protect data.</p>
 
-    <br><br>
+                <a href="{% url 'security_scanner' %}" class="btn">
+                    Scan Message
+                </a>
+            </div>
 
-    <a href="{% url 'user_logout' %}">
-        Logout
-    </a>
+            <div class="card">
+                <h2>Security Dashboard</h2>
+                <p>Monitor security events and audit logs.</p>
+
+                <a href="{% url 'security_dashboard' %}" class="btn">
+                    View Dashboard
+                </a>
+            </div>
+
+        </div>
+
+        <a href="{% url 'user_logout' %}" class="logout">
+            Logout
+        </a>
+
+    </div>
 
 </body>
 </html>
