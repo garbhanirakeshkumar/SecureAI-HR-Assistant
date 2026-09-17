@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HRassistantApp.views import home,security_scanner
+from HRassistantApp.views import home,security_scanner,hr_chatbot
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home, name="home"),
     path("security-scanner/", security_scanner, name="security_scanner"),
+    path("hr-chatbot/", hr_chatbot, name="hr_chatbot"),
 ]
