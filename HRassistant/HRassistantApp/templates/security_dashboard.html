@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Security Dashboard</title>
+</head>
+<body>
+
+    <h1>SecureAI HR Assistant</h1>
+    <h2>AI Security Dashboard</h2>
+
+    <h3>Total Security Events</h3>
+    <p>{{ total_events }}</p>
+
+    <h3>High Risk Events</h3>
+    <p>{{ high_risk_events }}</p>
+
+    <h3>Medium Risk Events</h3>
+    <p>{{ medium_risk_events }}</p>
+
+    <h2>Recent Security Logs</h2>
+
+    <table border="1">
+        <tr>
+            <th>Event Type</th>
+            <th>Risk Level</th>
+            <th>Message</th>
+            <th>Date</th>
+        </tr>
+
+        {% for log in recent_logs %}
+        <tr>
+            <td>{{ log.event_type }}</td>
+            <td>{{ log.risk_level }}</td>
+            <td>{{ log.message }}</td>
+            <td>{{ log.created_at }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No security logs found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
