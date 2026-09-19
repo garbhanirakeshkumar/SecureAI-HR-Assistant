@@ -175,6 +175,67 @@
     <a href="{% url 'home' %}" class="back">Back to Home</a>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<canvas id="securityChart"></canvas>
+
+<script>
+    const ctx = document.getElementById("securityChart");
+
+    new Chart(ctx, {
+        type: "bar",
+
+        data: {
+            labels: [
+                "High Risk",
+                "Medium Risk",
+                "Low Risk"
+            ],
+
+            datasets: [{
+                label: "Security Events",
+
+                data: [
+                    {{ high_risk_events }},
+                    {{ medium_risk_events }},
+                    {{ low_risk_events }}
+                ],
+
+                backgroundColor: [
+                    "red",
+                    "orange",
+                    "green"
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Security Events Overview"
+                },
+
+                legend: {
+                    display: true
+                }
+            },
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

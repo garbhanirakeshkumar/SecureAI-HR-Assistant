@@ -1,17 +1,18 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
 from .security_scanner import scan_prompt, mask_sensitive_data
 from .hr_chatbot import get_hr_response
 from .response_validator import validate_response
 from .models import SecurityAuditLog
-from django.db.models import Count
-from django.contrib.auth.decorators import login_required
+
 
 @login_required(login_url="user_login")
 def home(request):
     return render(request, "home.html")
+
 
 def user_login(request):
     error = None
@@ -38,9 +39,11 @@ def user_login(request):
         {"error": error}
     )
 
+
 def user_logout(request):
     logout(request)
     return redirect("user_login")
+
 
 @login_required(login_url="user_login")
 def security_scanner(request):
@@ -56,7 +59,7 @@ def security_scanner(request):
         if result["is_suspicious"]:
             SecurityAuditLog.objects.create(
                 event_type="Prompt Injection",
-                message=message,
+                message=masked_message,
                 risk_level=result["risk_level"]
             )
 
@@ -78,15 +81,36 @@ def hr_chatbot(request):
     if request.method == "POST":
         message = request.POST.get("message", "")
 
-        response = get_hr_response(message)
-        validation = validate_response(response)
+        scan_result = scan_prompt(message)
 
-        if not validation["is_safe"]:
+        if scan_result["is_suspicious"]:
+            masked_message = mask_sensitive_data(message)
+
             SecurityAuditLog.objects.create(
-                event_type="Unsafe AI Response",
-                message=response,
-                risk_level="Medium"
+                event_type="Prompt Injection",
+                message=masked_message,
+                risk_level="High"
             )
+
+            response = (
+                "Suspicious instruction detected. "
+                "Please ask a valid HR-related question."
+            )
+
+            validation = validate_response(response)
+
+        else:
+            response = get_hr_response(message)
+            validation = validate_response(response)
+
+            if not validation["is_safe"]:
+                masked_response = mask_sensitive_data(response)
+
+                SecurityAuditLog.objects.create(
+                    event_type="Unsafe AI Response",
+                    message=masked_response,
+                    risk_level="Medium"
+                )
 
     return render(
         request,
@@ -96,6 +120,8 @@ def hr_chatbot(request):
             "validation": validation,
         }
     )
+
+
 @login_required(login_url="user_login")
 def security_dashboard(request):
     total_events = SecurityAuditLog.objects.count()

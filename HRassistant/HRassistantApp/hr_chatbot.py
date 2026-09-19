@@ -1,6 +1,8 @@
-
 def get_hr_response(message):
-    message = message.lower()
+    message = message.lower().strip()
+
+    if not message:
+        return "Please enter a question."
 
     if "leave" in message:
         return "Please check your company's leave policy or contact HR for leave-related questions."

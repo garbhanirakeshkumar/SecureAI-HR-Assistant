@@ -4,9 +4,13 @@ import re
 def scan_prompt(message):
     suspicious_patterns = {
         "Ignore previous instructions": r"ignore previous instructions",
+
         "Reveal system prompt": r"(reveal|show|tell me).*(system prompt)",
+
         "Bypass security": r"(bypass|disable).*(security|restriction)",
+
         "Reveal password": r"(reveal|show|give).*(password|secret)",
+
         "Role manipulation": r"you are now"
     }
 
@@ -31,7 +35,9 @@ def scan_prompt(message):
         "message": "No suspicious instruction detected."
     }
 
+
 def mask_sensitive_data(message):
+
     # Mask email addresses
     message = re.sub(
         r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b',
