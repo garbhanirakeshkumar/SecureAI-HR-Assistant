@@ -1,8 +1,12 @@
+
 import re
 
 
 def scan_prompt(message):
-    suspicious_patterns = {
+
+    message = message.lower().strip()
+
+    high_risk_patterns = {
         "Ignore previous instructions": r"ignore previous instructions",
 
         "Reveal system prompt": r"(reveal|show|tell me).*(system prompt)",
@@ -14,20 +18,53 @@ def scan_prompt(message):
         "Role manipulation": r"you are now"
     }
 
+    medium_risk_patterns = {
+        "Employee personal information": (
+            r"(show|give|tell me).*(employee data|personal information)"
+        ),
+
+        "Confidential information": (
+            r"(show|give|reveal).*(confidential|private information)"
+        ),
+
+        "Employee salary information": (
+            r"(show|give|tell me).*(employee salary|salary details)"
+        )
+    }
+
     matched_rules = []
 
-    for rule_name, pattern in suspicious_patterns.items():
+    # Check High Risk patterns
+    for rule_name, pattern in high_risk_patterns.items():
+
         if re.search(pattern, message, re.IGNORECASE):
             matched_rules.append(rule_name)
 
     if matched_rules:
+
         return {
             "is_suspicious": True,
             "risk_level": "High",
             "matched_rules": matched_rules,
-            "message": "Suspicious instruction detected."
+            "message": "High-risk instruction detected."
         }
 
+    # Check Medium Risk patterns
+    for rule_name, pattern in medium_risk_patterns.items():
+
+        if re.search(pattern, message, re.IGNORECASE):
+            matched_rules.append(rule_name)
+
+    if matched_rules:
+
+        return {
+            "is_suspicious": True,
+            "risk_level": "Medium",
+            "matched_rules": matched_rules,
+            "message": "Medium-risk instruction detected."
+        }
+
+    # Normal prompt
     return {
         "is_suspicious": False,
         "risk_level": "Low",

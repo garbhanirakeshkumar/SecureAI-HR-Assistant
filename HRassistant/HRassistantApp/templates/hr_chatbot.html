@@ -77,6 +77,14 @@
             border-radius: 8px;
         }
 
+        .risk-result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fefce8;
+            border-left: 5px solid #eab308;
+            border-radius: 8px;
+        }
+
         .back {
             display: block;
             text-align: center;
@@ -99,6 +107,7 @@
         <h2>HR Chatbot</h2>
 
         <form method="POST">
+
             {% csrf_token %}
 
             <textarea
@@ -110,37 +119,98 @@
 
             <br><br>
 
-            <button type="submit">Ask HR Assistant</button>
+            <button type="submit">
+                Ask HR Assistant
+            </button>
+
         </form>
+
 
         {% if response %}
 
             <div class="response">
+
                 <h3>Assistant Response</h3>
+
                 <p>{{ response }}</p>
+
             </div>
 
-            <div class="validation">
-                <h3>Security Validation</h3>
 
-                <p>
-                    <strong>Safe:</strong> {{ validation.is_safe }}
-                </p>
+            {% if scan_result %}
 
-                <p>{{ validation.message }}</p>
+                <div class="risk-result">
 
-                {% if validation.warnings %}
-                    <h4>Security Warnings:</h4>
+                    <h3>Security Scan Result</h3>
 
-                    <ul>
-                        {% for warning in validation.warnings %}
-                            <li>{{ warning }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
+                    <p>
+                        <strong>Risk Level:</strong>
+                        {{ scan_result.risk_level }}
+                    </p>
+
+                    <p>
+                        <strong>Message:</strong>
+                        {{ scan_result.message }}
+                    </p>
+
+                    {% if scan_result.matched_rules %}
+
+                        <p>
+                            <strong>Matched Rules:</strong>
+                        </p>
+
+                        <ul>
+
+                            {% for rule in scan_result.matched_rules %}
+
+                                <li>{{ rule }}</li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+
+            {% if validation %}
+
+                <div class="validation">
+
+                    <h3>Security Validation</h3>
+
+                    <p>
+                        <strong>Safe:</strong>
+                        {{ validation.is_safe }}
+                    </p>
+
+                    <p>{{ validation.message }}</p>
+
+                    {% if validation.warnings %}
+
+                        <h4>Security Warnings:</h4>
+
+                        <ul>
+
+                            {% for warning in validation.warnings %}
+
+                                <li>{{ warning }}</li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
 
         {% endif %}
+
 
         <a href="{% url 'home' %}" class="back">
             Back to Home

@@ -56,12 +56,15 @@ def security_scanner(request):
         result = scan_prompt(message)
         masked_message = mask_sensitive_data(message)
 
-        if result["is_suspicious"]:
-            SecurityAuditLog.objects.create(
-                event_type="Prompt Injection",
-                message=masked_message,
-                risk_level=result["risk_level"]
-            )
+        SecurityAuditLog.objects.create(
+            event_type=(
+                "Prompt Injection"
+                if result["is_suspicious"]
+                else "Security Scan"
+            ),
+            message=masked_message,
+            risk_level=result["risk_level"]
+        )
 
     return render(
         request,
@@ -77,6 +80,7 @@ def security_scanner(request):
 def hr_chatbot(request):
     response = None
     validation = None
+    scan_result = None
 
     if request.method == "POST":
         message = request.POST.get("message", "")
@@ -84,12 +88,13 @@ def hr_chatbot(request):
         scan_result = scan_prompt(message)
 
         if scan_result["is_suspicious"]:
+
             masked_message = mask_sensitive_data(message)
 
             SecurityAuditLog.objects.create(
                 event_type="Prompt Injection",
                 message=masked_message,
-                risk_level="High"
+                risk_level=scan_result["risk_level"]
             )
 
             response = (
@@ -100,10 +105,12 @@ def hr_chatbot(request):
             validation = validate_response(response)
 
         else:
+
             response = get_hr_response(message)
             validation = validate_response(response)
 
             if not validation["is_safe"]:
+
                 masked_response = mask_sensitive_data(response)
 
                 SecurityAuditLog.objects.create(
@@ -118,10 +125,9 @@ def hr_chatbot(request):
         {
             "response": response,
             "validation": validation,
+            "scan_result": scan_result,
         }
     )
-
-
 @login_required(login_url="user_login")
 def security_dashboard(request):
     total_events = SecurityAuditLog.objects.count()
